@@ -25,8 +25,8 @@ sample_metadata <- read.table(args[1], sep=',', header=TRUE, stringsAsFactors = 
 
 
 # Ad $files columns with path to the quant.sf files (result from salmon)
-#sample_metadata$files <- paste0(args[3],"/processed/", sample_metadata$names, "/", sample_metadata$names, "_salmon/quant.sf")
-sample_metadata$files <- paste0(args[3],"/processed/", sample_metadata$names, "/salmon/quant.sf")
+sample_metadata$files <- paste0(args[3],"/processed/", sample_metadata$names, "/", sample_metadata$names, "_salmon/quant.sf")
+#sample_metadata$files <- paste0(args[3],"/processed/", sample_metadata$names, "/salmon/quant.sf")
 head(sample_metadata)
 
 args
@@ -67,6 +67,7 @@ save(dds, file = paste0(args[3], "/results/", args[2], "/dds.RData"))
  write.csv(counts_, file=paste0(directory, "/results/", args[2], "/graphs/norm_counts.csv"))
 
 res <- results(dds, contrast=c("specimen","MRD","NDMM"))
+
 #prepare annotation
 res = subset(res, res$baseMean > 10)
 mart <- useMart("ENSEMBL_MART_ENSEMBL")
@@ -103,13 +104,4 @@ res$description <- annotLookup$description
 resOrdered <- res[order(res$padj),]
 resOrderedDF <- as.data.frame(resOrdered)
 write.csv(resOrderedDF, file = paste0(directory, "/results/", args[2], "/graphs/deseq_result_paired.csv"))
-
-
-
-
-pdf(paste0(directory, "/results/", args[2], "/graphs/ma_plot.pdf"))
-  plotMA(res)
-dev.off()
-
-# summary(res)
 
