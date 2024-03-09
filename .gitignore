@@ -1,0 +1,13 @@
+.vscode/
+.nextflow/
+results/
+slurm_log/
+logs/
+!/data/raw/*.csv
+results/all_samples/*
+data/*
+!data/raw
+data/raw/*
+processed/
+work/
+.nextflow.log*
