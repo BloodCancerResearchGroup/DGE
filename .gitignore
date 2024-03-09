@@ -3,11 +3,9 @@
 results/
 slurm_log/
 logs/
-!/data/raw/*.csv
-results/all_samples/*
-data/*
-!data/raw
 data/raw/*
+!data/raw/samples_diplomka.csv
+results/all_samples/
 processed/
 work/
 .nextflow.log*
