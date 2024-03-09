@@ -8,7 +8,7 @@
     - DESeq2 dds object for any other required analysis
     - Quality control of all samples made with MultiQC
  
-### REQUIRED ADJUSTMENT IN nextflow.config
+### SETUP AND REQUIRED ADJUSTMENT IN nextflow.config
     - csv file containing metadata about samples (config - samplesCSV)
     - Genome fasta file
     - Salmon index folder (for more information check: https://salmon.readthedocs.io/en/latest/salmon.html#preparing-transcriptome-indices-mapping-based-mode – Preparing transcriptome indices)
