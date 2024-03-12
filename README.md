@@ -21,3 +21,4 @@ The pipeline can be run with "nextflow run DGE_workflow.nf -profile standard"
 
 Plans for future:
 Make an option to automatically download and set up necessary references and indices.
+Make STAR and Qualimap optional; make it an option to run DESeq2 with STAR quantification.

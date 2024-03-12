@@ -1,5 +1,5 @@
 process SALMON {
-    label "medium"
+    label "salmon"
     tag "${sample_ID}"
     publishDir(path: "${params.output}${sample_ID}", mode: 'copy', overwrite: 'true')
 

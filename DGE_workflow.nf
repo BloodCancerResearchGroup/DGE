@@ -1,3 +1,4 @@
+nextflow.enable.dsl=2
 //load modules
 include { TRIM_GALORE                                   } from './modules/trim_galore'
 include { RIBO_DET                                      } from './modules/ribo_det'

@@ -9,16 +9,15 @@ library("biomaRt")
 # Parse arguments from a command line
 args = commandArgs(trailingOnly=TRUE)
 
+if (!dir.exists(paste0("./results/", args[2]))) {
+  dir.create(paste0("./results/", args[2]), recursive = TRUE)
+} else {
+  print("Directory already exists.")
+}
+
 #Prepare directories
 directory <- args[3]
 directory
-if (!dir.exists(paste0(directory, "/results/", args[2], "/graphs"))) {
-  dir.create(paste0(directory, "/results/", args[2], "/graphs"), recursive = TRUE)
-  cat("Folders created","/results/", args[2], "/graphs")
-} else {
-  cat("Folders already exists:", "/results/", args[2], "/graphs")
-}
-print(paste0(directory, "/results/", args[2], "/graphs"))
 
 # Read metadata table
 sample_metadata <- read.table(args[1], sep=',', header=TRUE, stringsAsFactors = FALSE)
@@ -54,17 +53,17 @@ dds$specimen <- relevel(dds$specimen, ref = "NDMM")
 keep <- rowSums(counts(dds)) > 1
 dds <- dds[keep,]
 head(dds)
-save(dds, file = paste0(args[3], "/results/", args[2], "/dds.RData"))
+save(dds, file = paste0("./results/", args[2], "/dds.RData"))
 
 # # EXPLORATORY ANALYSIS AND VISUALIZATION
 # ########################################
 # # counts normalization
  rld <- rlog(dds, blind = FALSE)
- save(rld, file = paste0(args[3], "/results/", args[2], "/rld.RData"))
+ save(rld, file = paste0("./results/", args[2], "/rld.RData"))
 
  dds <- DESeq(dds, betaPrior=FALSE) 
  counts_ = counts(dds, normalized=T)
- write.csv(counts_, file=paste0(directory, "/results/", args[2], "/graphs/norm_counts.csv"))
+ write.csv(counts_, file=paste0("./results/", args[2], "/norm_counts.csv"))
 
 res <- results(dds, contrast=c("specimen","MRD","NDMM"))
 
@@ -83,7 +82,7 @@ annotLookup <- getBM(
 # genes with no annotation
 problematic_ids = setdiff(rownames(res), annotLookup$ensembl_gene_id)
 
-fileConn <- file(paste0(directory, "/results/", args[2], "/graphs/problematic_ids.out"))
+fileConn <- file(paste0("./results/", args[2], "/annotation_problematic_ids.out"))
 writeLines(problematic_ids, fileConn)    
 close(fileConn)
 
@@ -103,5 +102,5 @@ res$description <- annotLookup$description
 # save results
 resOrdered <- res[order(res$padj),]
 resOrderedDF <- as.data.frame(resOrdered)
-write.csv(resOrderedDF, file = paste0(directory, "/results/", args[2], "/graphs/deseq_result_paired.csv"))
+write.csv(resOrderedDF, file = paste0("./results/", args[2], "/deseq_result_paired.csv"))
 
