@@ -14,7 +14,7 @@ process RIBO_DET {
     ribodetector_cpu -t ${task.cpus} -l 150 --chunk_size 1800 -i ${fq1} ${fq2} -e rrna \
     -o ${sample_ID}_noRiboFq1.fastq.gz ${sample_ID}_noRiboFq2.fastq.gz \
     -r ${sample_ID}_RiboFq1.fastq ${sample_ID}_RiboFq2.fastq \
-    --log ${sample_ID}_log.txt
+    --log ${sample_ID}_log.txt --memory ${task.memory}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
