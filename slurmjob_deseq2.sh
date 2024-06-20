@@ -13,4 +13,4 @@
 cd /scratch/project/open-27-18/MRD_DGE/
 ml Anaconda3/2023.07-2
 source activate nextflow
-nextflow run DGE_workflow.nf -profile standard -resume
+nextflow run deseq.nf -profile standard -resume

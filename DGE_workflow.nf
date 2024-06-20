@@ -13,7 +13,7 @@ def paramsToCheck = [params.samples, params.sampleCSV, params.genome, params.gtf
 paramsToCheck.each { param -> file(param, checkIfExists: true) }
 
 //set name the output dir name of deseq2
-def deseqRunName = params.deseq_run_name ?: "default"
+def deseqRunName = params.deseq_run_name ?: "deseq2_default"
 
 //Define channel for the parsing of csv file containg information about 
 //The csv file is expected to contain columns "names", which denotes sapmle unique identifier and
@@ -50,11 +50,11 @@ workflow {
         STAR_QUALIMAP.out.star_qualimap.collect{it[1]}.ifEmpty([]),
     )
 
-    DESEQ2(SALMON.out.salmon_quant.collect{it[0]}.ifEmpty([]), 
-        params.sampleCSV,  
-        deseqRunName,
-        params.salmon_index,
-        params.transcript_fa,
-        params.gtf)
+    // DESEQ2(SALMON.out.salmon_quant.collect{it[0]}.ifEmpty([]), 
+    //     params.sampleCSV,  
+    //     deseqRunName,
+    //     params.salmon_index,
+    //     params.transcript_fa,
+    //     params.gtf)
 }
 

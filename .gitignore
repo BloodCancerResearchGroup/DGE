@@ -9,3 +9,4 @@ results/all_samples/
 processed/
 work/
 .nextflow.log*
+./deseq.nf

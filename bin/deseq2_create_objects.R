@@ -61,46 +61,46 @@ save(dds, file = paste0("./results/", args[2], "/dds.RData"))
  rld <- rlog(dds, blind = FALSE)
  save(rld, file = paste0("./results/", args[2], "/rld.RData"))
 
- dds <- DESeq(dds, betaPrior=FALSE) 
- counts_ = counts(dds, normalized=T)
- write.csv(counts_, file=paste0("./results/", args[2], "/norm_counts.csv"))
+# dds <- DESeq(dds, betaPrior=FALSE) 
+# counts_ = counts(dds, normalized=T)
+# write.csv(counts_, file=paste0("./results/", args[2], "/norm_counts.csv"))
 
-res <- results(dds, contrast=c("specimen","MRD","NDMM"))
+#res <- results(dds, contrast=c("specimen","MRD","NDMM"))
 
 #prepare annotation
-res = subset(res, res$baseMean > 10)
-mart <- useMart("ENSEMBL_MART_ENSEMBL")
-mart <- useDataset("hsapiens_gene_ensembl", mart)
-annotLookup <- getBM(
-  mart=mart,
-  attributes=c("ensembl_gene_id", "gene_biotype", "external_gene_name", "description"),
-  filter="ensembl_gene_id",
-  values=rownames(res),
-  uniqueRows=TRUE)
+# res = subset(res, res$baseMean > 10)
+# mart <- useMart("ENSEMBL_MART_ENSEMBL")
+# mart <- useDataset("hsapiens_gene_ensembl", mart)
+# annotLookup <- getBM(
+#   mart=mart,
+#   attributes=c("ensembl_gene_id", "gene_biotype", "external_gene_name", "description"),
+#   filter="ensembl_gene_id",
+#   values=rownames(res),
+#   uniqueRows=TRUE)
 
-############################
-# genes with no annotation
-problematic_ids = setdiff(rownames(res), annotLookup$ensembl_gene_id)
+# ############################
+# # genes with no annotation
+# problematic_ids = setdiff(rownames(res), annotLookup$ensembl_gene_id)
 
-fileConn <- file(paste0("./results/", args[2], "/annotation_problematic_ids.out"))
-writeLines(problematic_ids, fileConn)    
-close(fileConn)
+# fileConn <- file(paste0("./results/", args[2], "/annotation_problematic_ids.out"))
+# writeLines(problematic_ids, fileConn)    
+# close(fileConn)
 
-res <- subset(res, !(rownames(res) %in% problematic_ids))
-ens = rownames(res)
+#res <- subset(res, !(rownames(res) %in% problematic_ids))
+#ens = rownames(res)
 
 #annotate
-annotLookup <- data.frame(
-  ens[match(annotLookup$ensembl_gene_id, ens)],
-  annotLookup)
-colnames(annotLookup) <- c( 
-      "original_id", 
-      c("ensembl_gene_id", "gene_biotype", "external_gene_name", "description")) 
-res$symbol <- annotLookup$external_gene_name
-res$biotype <- annotLookup$gene_biotype
-res$description <- annotLookup$description
-# save results
-resOrdered <- res[order(res$padj),]
-resOrderedDF <- as.data.frame(resOrdered)
-write.csv(resOrderedDF, file = paste0("./results/", args[2], "/deseq_result_paired.csv"))
+# annotLookup <- data.frame(
+#   ens[match(annotLookup$ensembl_gene_id, ens)],
+#   annotLookup)
+# colnames(annotLookup) <- c( 
+#       "original_id", 
+#       c("ensembl_gene_id", "gene_biotype", "external_gene_name", "description")) 
+# res$symbol <- annotLookup$external_gene_name
+# res$biotype <- annotLookup$gene_biotype
+# res$description <- annotLookup$description
+# # save results
+#resOrdered <- res[order(res$padj),]
+#resOrderedDF <- as.data.frame(resOrdered)
+#write.csv(resOrderedDF, file = paste0("./results/", args[2], "/deseq_result_paired.csv"))
 
